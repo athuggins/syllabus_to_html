@@ -2,6 +2,15 @@ import pypandoc
 from bs4 import BeautifulSoup
 
 
+def read_course_html(course):
+    """
+    Opens the course's HTML file with BeautifulSoup, and
+    returns it.
+    """
+    lines = BeautifulSoup(open(course))
+    return lines
+
+
 def find_course_units(course_file):
     """
     Finds each of the course's units and returns a list
@@ -34,15 +43,6 @@ def write_unit_to_file(unit_list, format):
         output.write(to_write)
         output.close()
     return count
-
-
-def read_course_html(course):
-    """
-    Opens the course's HTML file with BeautifulSoup, and
-    returns it.
-    """
-    lines = BeautifulSoup(open(course))
-    return lines
 
 
 def html_to_markdown(num_of_units):
