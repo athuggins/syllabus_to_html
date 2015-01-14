@@ -18,18 +18,19 @@ def find_course_units(course_file):
     return unit_list
 
 
-def write_unit_to_file(unit_list):
+def write_unit_to_file(unit_list, format):
     """
-    Writes the contents of the unit to a separate html file.
+    Writes the contents of the unit to a separate file.
+    format argument describes the filetype.
     """
     count = 0
     for i in unit_list:
         to_write = str(i)[1:-1]
         count += 1
         if count <= 9:
-            output = open('Unit0%d.html' % count, 'w')
+            output = open('Unit0%d.%s' % (count, format), 'w')
         else:
-            output = open('Unit%d.html' % count, 'w')
+            output = open('Unit%d.%s' % (count, format), 'w')
         output.write(to_write)
         output.close()
     return count
@@ -51,12 +52,12 @@ def convert_to_markdown(num_of_units):
     for count in range(num_of_units):
         if count <= 9:
             output = open('Unit0%d.md' % count, 'w')
-            to_write = pypandoc.convert('Unit0%d.html' % count, "markdown_strict").encode('utf-8')
+            to_write = pypandoc.convert('Unit0%d.html' % count, format="markdown_strict").encode('utf-8')
             output.write(to_write)
             output.close()
         else:
             output = open('Unit0%d.md' % count, 'w')
-            to_write = pypandoc.convert('Unit%d.html' % count, "markdown_strict").encode('utf-8')
+            to_write = pypandoc.convert('Unit%d.html' % count, format="markdown_strict").encode('utf-8')
             output.write(to_write)
             output.close()
 
@@ -64,8 +65,6 @@ def convert_to_markdown(num_of_units):
 
 course_doc = read_course_html("arth110.html")
 course_units = find_course_units(course_doc)
-unit_count = write_unit_to_file(course_units)
+unit_count = write_unit_to_file(course_units, "html")
 # writes each unit to an html file, and returns how many units there are so pandoc knows what to do
 convert_to_markdown(unit_count)
-
-# print pypandoc.convert("Unit01.html", "markdown_strict")
