@@ -50,16 +50,13 @@ def html_to_markdown(num_of_units):
     Converts HTML to markdown based on how many units a course has.
     """
     for count in range(1, num_of_units+1):
+        output = open('Unit0%d.md' % count, 'w')
         if count <= 9:
-            output = open('Unit0%d.md' % count, 'w')
             to_write = pypandoc.convert("Unit0%d.html" % count, "markdown_strict").encode('utf-8')
-            output.write(to_write)
-            output.close()
         else:
-            output = open('Unit%d.md' % count, 'w')
             to_write = pypandoc.convert("Unit0%d.html" % count, "markdown_strict").encode('utf-8')
-            output.write(to_write)
-            output.close()
+        output.write(to_write)
+        output.close()
 
 
 course_doc = read_course_html("arth110.html")
