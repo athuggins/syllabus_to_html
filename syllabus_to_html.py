@@ -7,6 +7,7 @@ def read_course_html(course):
     Opens the course's HTML file with BeautifulSoup, and
     returns it.
     """
+    course = course.decode('utf-8')  # is this necessary?
     lines = BeautifulSoup(open(course))
     return lines
 
@@ -20,10 +21,12 @@ def find_course_units(course_file):
     unit_list = []
 
     for i in range(20):
-        unit_x = course_file.find_all(id='%s_unit' % i)
-        if len(unit_x) > 0:
+        unit_x = course_file.find(id='%s_unit' % i)
+        if unit_x is None:
+            pass
+        elif len(unit_x) > 0:
+            unit_x = str(unit_x)
             unit_list.append(unit_x)
-
     return unit_list
 
 
@@ -34,7 +37,7 @@ def write_unit_to_file(unit_list, file_format):
     """
     count = 0
     for i in unit_list:
-        to_write = str(i)[1:-1]
+        to_write = str(i)  # [1:-1] was not necessary
         count += 1
         if count <= 9:
             output = open('Unit0%d.%s' % (count, file_format), 'w')
