@@ -27,7 +27,7 @@ def find_course_units(course_file):
     return unit_list
 
 
-def write_unit_to_file(unit_list, format):
+def write_unit_to_file(unit_list, file_format):
     """
     Writes the contents of the unit to a separate file.
     format argument describes the filetype.
@@ -37,9 +37,9 @@ def write_unit_to_file(unit_list, format):
         to_write = str(i)[1:-1]
         count += 1
         if count <= 9:
-            output = open('Unit0%d.%s' % (count, format), 'w')
+            output = open('Unit0%d.%s' % (count, file_format), 'w')
         else:
-            output = open('Unit%d.%s' % (count, format), 'w')
+            output = open('Unit%d.%s' % (count, file_format), 'w')
         output.write(to_write)
         output.close()
     return count
@@ -60,7 +60,6 @@ def html_to_markdown(num_of_units):
             to_write = pypandoc.convert("Unit0%d.html" % count, "markdown_strict").encode('utf-8')
             output.write(to_write)
             output.close()
-
 
 
 course_doc = read_course_html("arth110.html")
