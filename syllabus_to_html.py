@@ -61,11 +61,6 @@ def html_to_markdown(num_of_units):
             to_write = pypandoc.convert("Unit0%d.html" % count, "markdown_strict").encode('utf-8')
             output.write(to_write)
             output.close()
-#   for count in range(num_of_units):
-#       output = open('Unit01.md', 'w')
-#       to_write = pypandoc.convert("Unit01.html", "markdown_strict").encode('utf-8')
-#       output.write(to_write)
-#       output.close()
 
 
 
