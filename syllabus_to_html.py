@@ -81,6 +81,9 @@ def html_to_markdown(num_of_units):
 
 
 def get_course_intro(course_file):
+    """
+    Locates the introductory section of the course syllabus.
+    """
     whole_course = str(course_file)
     new_whole_course = whole_course.split('\n')
     for line in new_whole_course:
@@ -94,6 +97,9 @@ def get_course_intro(course_file):
 
 
 def course_intro_to_html_and_md(intro_string):
+    """
+    Converts the course intro into html and markdown.
+    """
     output = open('Intro.html', 'w')
     output.write(intro_string)
     output.close()
