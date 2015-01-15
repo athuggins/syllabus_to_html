@@ -1,7 +1,6 @@
 import pypandoc
 import os
 from bs4 import BeautifulSoup
-import re
 
 '''
 #  Not doing this part because urllib2 doesn't support ssl/https.
