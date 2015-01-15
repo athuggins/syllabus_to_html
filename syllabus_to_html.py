@@ -1,4 +1,5 @@
 import pypandoc
+import os
 from bs4 import BeautifulSoup
 
 
@@ -62,9 +63,12 @@ def html_to_markdown(num_of_units):
         output.close()
 
 
-course_name = input("What is the name of the course file you'd like to process? ")
+course_name = str(raw_input("What is the name of the course file you'd like to process? "))
+if not os.path.exists(course_name):
+    os.makedirs(course_name)
 course_doc = read_course_html("%s.html" % course_name)
 course_units = find_course_units(course_doc)
+os.chdir(course_name)
 unit_count = write_unit_to_file(course_units, "html")
 # writes each unit to an html file, and returns how many units there are so pandoc knows what to do
 html_to_markdown(unit_count)
