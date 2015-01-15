@@ -1,7 +1,24 @@
 import pypandoc
 import os
 from bs4 import BeautifulSoup
+import re
 
+'''
+#  Not doing this part because urllib2 doesn't support ssl/https.
+import urllib2
+import re
+
+def get_course_from_url():
+    """
+    This would work if urllib2 supported ssl. It doesn't. Sigh :(
+    """
+    url = urllib2.urlopen(str(raw_input("What URL would you like to pull from?")))
+    content = url.read()
+    soup = BeautifulSoup(content)
+    for a in soup.findAll('a',href=True):
+        if re.findall('syllabus', a['href']):
+            print "Found the Syllabus:", a['href']
+'''
 
 def read_course_html(course):
     """
@@ -63,12 +80,41 @@ def html_to_markdown(num_of_units):
         output.close()
 
 
-course_name = str(raw_input("What is the name of the course file you'd like to process? "))
+def get_course_intro(course_file):
+    whole_course = str(course_file)
+    new_whole_course = whole_course.split('\n')
+    for line in new_whole_course:
+        if 'Course Syllabus for' in line:
+            start_line = new_whole_course.index(line)
+        if 'id="overview"' in line:
+            end_line = new_whole_course.index(line)
+    intro_list = new_whole_course[start_line:end_line]
+    intro_string = '\n'.join(intro_list)
+    return intro_string
+
+
+def course_intro_to_html_and_md(intro_string):
+    output = open('Intro.html', 'w')
+    output.write(intro_string)
+    output.close()
+
+    md_output = open('Intro.md', 'w')
+    to_write = pypandoc.convert('Intro.html', 'markdown_strict').encode('utf-8')
+    md_output.write(to_write)
+    md_output.close()
+
+# Okay, this next part is a mess, but I'll clean it up next and make it its own function that will just take the
+# html file of the syllabus and output everything else.
+
+course_name = "arth110"
+# course_name = str(raw_input("What is the name of the course file you'd like to process? "))
 if not os.path.exists(course_name):
     os.makedirs(course_name)
 course_doc = read_course_html("%s.html" % course_name)
 course_units = find_course_units(course_doc)
 os.chdir(course_name)
 unit_count = write_unit_to_file(course_units, "html")
-# writes each unit to an html file, and returns how many units there are so pandoc knows what to do
+#  writes each unit to an html file, and returns how many units there are so pandoc knows what to do
 html_to_markdown(unit_count)
+intro = get_course_intro(course_doc)
+course_intro_to_html_and_md(intro)
