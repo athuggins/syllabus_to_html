@@ -92,24 +92,14 @@ def get_course_intro(course_file):
     """
     whole_course = str(course_file)
     new_whole_course = whole_course.split('\n')
-    start_line = 0
-    end_line = 0
     for line in new_whole_course:
-        # course syllabus files alwyas begin with this line
+        # course intros always start with this line
         if 'Course Syllabus for' in line:
             start_line = new_whole_course.index(line)
-        # course intros stop here, where the 'Course Overview' section begins
-        else:
-            print "Something is wrong - expected starting lines in HTML not found."
-            return -1
+        # course intros always end when you reach the course overview
         if 'id="overview"' in line:
             end_line = new_whole_course.index(line)
-        else:
-            print "Something is wrong - expected closing lines in HTML not found."
-            return -1
-    # puts each line of the html file into a big list
     intro_list = new_whole_course[start_line:end_line]
-    # brings the list back together into a string with each line of the html on a new line
     intro_string = '\n'.join(intro_list)
     return intro_string
 
